@@ -1,0 +1,22 @@
+name: release
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: write # create releases
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: go-semantic-release/action@v1
+        with:
+          allow-initial-development-versions: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
