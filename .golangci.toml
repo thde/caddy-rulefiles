@@ -1,0 +1,99 @@
+#:schema https://golangci-lint.run/jsonschema/golangci.jsonschema.json
+version = "2"
+
+[linters]
+
+enable = [
+    "revive",
+    "gocritic",
+    "gosec",
+    "bodyclose",
+    "canonicalheader",
+
+    # Error Handling & Bug Prevention
+    "err113",
+    "errname",
+    "wrapcheck",
+    "nilerr",
+    "makezero",
+    "prealloc",
+    "dogsled",
+    "unparam",
+    "staticcheck",
+
+    # Modern Go, Architecture
+    "copyloopvar",
+    "intrange",
+    "sloglint",
+    "loggercheck",
+    "perfsprint",
+    "exhaustive",
+    "exptostd",
+    "nolintlint",
+    "modernize",
+    "promlinter",
+
+    # Testing
+    "paralleltest",
+    "thelper",
+
+    # Context
+    "noctx",
+    "containedctx",
+    "contextcheck",
+
+    # Documentation
+    "godoclint",
+    "godot",
+]
+
+[linters.settings.errcheck]
+check-type-assertions = true
+
+[linters.settings.gocritic]
+enabled-tags = ["diagnostic", "experimental", "opinionated", "performance", "style"]
+
+[linters.settings.gocritic.settings.hugeParam]
+sizeThreshold = 512
+
+[linters.settings.gocritic.settings.rangeValCopy]
+sizeThreshold = 512
+
+[linters.settings.wrapcheck]
+# A Dispenser error is built here and already carries the Caddyfile position,
+# an error of the next handler in the chain is a caddyhttp.HandlerError that
+# Caddy formats itself. Wrapping either only adds noise.
+ignore-package-globs = ["github.com/caddyserver/caddy/v2/*"]
+# http.ResponseWriter and io.ReaderFrom have callers that compare the error
+# they return, so it has to be handed back unchanged.
+ignore-interface-regexps = ["^caddyhttp\\.Handler$", "^http\\.ResponseWriter$", "^io\\.ReaderFrom$"]
+ignore-sig-regexps = ["func \\(net/http\\.ResponseWriter\\)\\.Write\\("]
+
+[linters.settings.exhaustive]
+default-signifies-exhaustive = true
+
+[linters.settings.nolintlint]
+require-explanation = true
+require-specific = true
+
+[linters.settings.godoclint]
+require-doc = true
+
+[linters.settings.godot]
+scope = "toplevel"
+capital = true
+
+[[linters.exclusions.rules]]
+linters = ["errcheck"]
+source = "^\\s*defer\\s+"
+
+# A test asserts on the error it gets, it does not pass it on to a caller.
+[[linters.exclusions.rules]]
+linters = ["wrapcheck"]
+path = "_test\\.go"
+
+[formatters]
+enable = ["gci", "gofmt", "gofumpt", "goimports"]
+
+[formatters.settings.gofumpt.extra]
+group-params = true
