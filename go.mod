@@ -51,7 +51,7 @@ require (
 	github.com/golang/snappy v1.0.0 // indirect
 	// Pinned: cel-go >= v0.29 changes interpreter.NewCall to take
 	// []InterpretableV2, which caddy v2.11.4 does not compile against.
-	github.com/google/cel-go v0.28.1 // indirect
+	github.com/google/cel-go v0.29.0 // indirect
 	github.com/google/s2a-go v0.1.9 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.21 // indirect
