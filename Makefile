@@ -46,13 +46,9 @@ typos:
 	typos
 
 update:
-	go get -v -u ./...
-	# cel-go >= v0.29 changes interpreter.NewCall to take []InterpretableV2,
-	# which caddy v2.11.4 does not compile against. Drop once caddy catches up.
-	go get github.com/google/cel-go@v0.28.1
-	# automemlimit v1.0.0 renames SetGoMemLimitWithOpts to Set, which caddy
-	# v2.11.4 does not compile against. Drop once caddy catches up.
-	go get github.com/KimMachineGun/automemlimit@v0.7.5
+	# Only bump direct dependencies. Indirect versions are left to caddy's
+	# go.mod, since this module's minimums propagate into users' caddy builds.
+	go get $$(go list -m -f '{{if not (or .Indirect .Main)}}{{.Path}}@latest{{end}}' all)
 	go mod tidy
 	$(MAKE) test
 
